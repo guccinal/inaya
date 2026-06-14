@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Иная — студия осанки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#86A96F;
+    --sage-2:#7B9E63;
+    --sage-deep:#52723B;
+    --sage-darker:#3A5727;
+    --mist:#E7EEDD;
+    --mist-2:#EFF3E8;
+    --paper:#F8F7F1;
+    --ink:#26301E;
+    --muted:rgba(38,48,30,.64);
+    --cream:#F3F5EB;
+    --cream-dim:rgba(243,245,235,.72);
+    --line:rgba(38,48,30,.14);
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Manrope',system-ui,sans-serif;
+    font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Cormorant',Georgia,serif;font-weight:500;line-height:1.04;margin:0;letter-spacing:.005em}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;
+    font-weight:600;color:var(--sage-deep);
+  }
+  .eyebrow.on-green{color:var(--cream-dim)}
+
+  /* ---- buttons ---- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55em;
+    font-family:'Manrope';font-weight:600;font-size:.95rem;
+    padding:15px 28px;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    transition:transform .25s ease,background .25s ease,color .25s ease,border-color .25s ease;
+    letter-spacing:.01em;
+  }
+  .btn .arr{transition:transform .25s ease}
+  .btn:hover .arr{transform:translateX(4px)}
+  .btn-primary{background:var(--sage-deep);color:var(--cream)}
+  .btn-primary:hover{background:var(--sage-darker);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--sage-deep);color:var(--sage-deep)}
+  .btn-cream{background:var(--cream);color:var(--sage-darker)}
+  .btn-cream:hover{background:#fff;transform:translateY(-2px)}
+  .btn-cream-ghost{background:transparent;color:var(--cream);border-color:rgba(243,245,235,.4)}
+  .btn-cream-ghost:hover{border-color:var(--cream);background:rgba(243,245,235,.08)}
+  :focus-visible{outline:2px solid var(--sage-darker);outline-offset:3px;border-radius:4px}
+
+  /* ---- header ---- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(248,247,241,.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .mono{width:38px;height:38px;flex:none}
+  .brand .name{font-family:'Cormorant';font-weight:600;font-size:1.5rem;letter-spacing:.06em;line-height:1}
+  .brand .name small{display:block;font-family:'Manrope';font-weight:600;font-size:.5rem;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:18px}
+
+  /* ---- hero ---- */
+  .hero{background:linear-gradient(160deg,var(--sage) 0%,var(--sage-2) 64%,#6f945a 100%);color:var(--cream);position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:84px 0 92px}
+  .hero h1{font-size:clamp(3.2rem,8.4vw,7rem);color:#fff;margin:22px 0 0;font-weight:500;line-height:.92}
+  .hero h1 em{font-style:italic;font-weight:400;color:var(--cream)}
+  .hero .lead{margin-top:26px;max-width:30em;font-size:1.12rem;color:var(--cream-dim);font-weight:400}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .hero .note{margin-top:18px;font-size:.84rem;color:var(--cream-dim);letter-spacing:.01em}
+  .hero-figure{display:flex;justify-content:center;align-items:center;position:relative}
+  .hero-figure svg{width:100%;max-width:340px;height:auto}
+
+  /* draw-in animation for svg figure */
+  .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.8s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .dot{opacity:0;animation:pop .5s ease forwards}
+  @keyframes pop{to{opacity:1}}
+
+  /* axis tick decoration */
+  .axis-tag{position:absolute;font-family:'Manrope';font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim)}
+
+  /* ---- generic section ---- */
+  section{padding:96px 0}
+  .sec-head{max-width:34em}
+  .sec-head h2{font-size:clamp(2.1rem,4.6vw,3.5rem);margin-top:16px}
+  .sec-head .sub{margin-top:20px;color:var(--muted);font-size:1.08rem}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---- problem strip ---- */
+  .problem{background:var(--mist)}
+  .problem .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .problem ul{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:2px}
+  .problem li{padding:18px 0;border-top:1px solid var(--line);display:flex;gap:16px;align-items:baseline;font-size:1.02rem}
+  .problem li:last-child{border-bottom:1px solid var(--line)}
+  .problem li b{font-family:'Cormorant';font-size:1.5rem;font-weight:600;color:var(--sage-deep);min-width:1.4em;line-height:1}
+
+  /* ---- method ---- */
+  .method .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:48px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px;transition:transform .3s ease,box-shadow .3s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -24px rgba(58,87,39,.45)}
+  .card .ic{width:30px;height:30px;color:var(--sage-deep);margin-bottom:18px}
+  .card h3{font-size:1.7rem;font-weight:600}
+  .card p{margin-top:10px;color:var(--muted);font-size:1rem}
+
+  /* ---- directions list ---- */
+  .directions{background:var(--mist-2)}
+  .dir-list{margin-top:40px;border-top:1px solid var(--line)}
+  .dir{display:grid;grid-template-columns:.5fr 1.4fr 2fr auto;gap:24px;align-items:center;
+       padding:26px 6px;border-bottom:1px solid var(--line);transition:background .25s,padding-left .25s}
+  .dir:hover{background:rgba(130,169,111,.08);padding-left:18px}
+  .dir .num{font-family:'Cormorant';font-size:1.3rem;color:var(--sage-deep);font-weight:600}
+  .dir .nm{font-family:'Cormorant';font-size:1.7rem;font-weight:600}
+  .dir .ds{color:var(--muted);font-size:1rem}
+  .dir .fmt{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-deep);font-weight:600;white-space:nowrap}
+
+  /* ---- process (numbered, vertical axis) ---- */
+  .process{position:relative}
+  .steps{margin-top:54px;position:relative;display:grid;gap:0}
+  .steps:before{content:"";position:absolute;left:31px;top:14px;bottom:14px;width:2px;
+                background:linear-gradient(var(--sage),rgba(130,169,111,.15))}
+  .step{display:grid;grid-template-columns:64px 1fr;gap:28px;padding:26px 0;align-items:start;position:relative}
+  .step .node{width:64px;height:64px;border-radius:50%;background:var(--paper);border:2px solid var(--sage);
+              display:flex;align-items:center;justify-content:center;font-family:'Cormorant';
+              font-size:1.5rem;font-weight:600;color:var(--sage-deep);z-index:2}
+  .step h3{font-size:1.6rem;font-weight:600}
+  .step p{margin-top:8px;color:var(--muted);font-size:1.02rem;max-width:42em}
+
+  /* ---- results ---- */
+  .results{background:var(--sage-darker);color:var(--cream)}
+  .results .sec-head h2{color:#fff}
+  .results .sec-head .eyebrow{color:var(--cream-dim)}
+  .results .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:52px}
+  .res{padding-top:24px;border-top:1px solid rgba(243,245,235,.25)}
+  .res .big{font-family:'Cormorant';font-size:1.9rem;font-weight:600;color:#fff}
+  .res p{margin-top:10px;color:var(--cream-dim);font-size:.98rem}
+  .results .honest{margin-top:46px;font-size:.98rem;color:var(--cream-dim);max-width:46em;border-left:2px solid var(--sage);padding-left:20px;font-style:italic;font-family:'Cormorant';font-size:1.25rem}
+
+  /* ---- pricing ---- */
+  .pricing .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px}
+  .price{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px 28px;display:flex;flex-direction:column}
+  .price.feat{background:var(--sage);color:var(--cream);border-color:var(--sage)}
+  .price .tier{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--sage-deep)}
+  .price.feat .tier{color:var(--cream-dim)}
+  .price .amt{font-family:'Cormorant';font-size:2.6rem;font-weight:600;margin:16px 0 4px}
+  .price .per{font-size:.86rem;color:var(--muted)}
+  .price.feat .per{color:var(--cream-dim)}
+  .price ul{list-style:none;margin:20px 0 26px;padding:0;display:grid;gap:10px;font-size:.95rem;color:var(--muted)}
+  .price.feat ul{color:var(--cream-dim)}
+  .price li{display:flex;gap:10px;align-items:baseline}
+  .price li:before{content:"·";color:var(--sage-deep);font-weight:700}
+  .price.feat li:before{color:var(--cream)}
+  .price .btn{margin-top:auto;justify-content:center}
+
+  /* ---- faq ---- */
+  .faq{background:var(--mist)}
+  .faq .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+  details{border-bottom:1px solid var(--line);padding:6px 0}
+  summary{list-style:none;cursor:pointer;padding:20px 0;font-family:'Cormorant';font-size:1.5rem;
+          font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:20px}
+  summary::-webkit-details-marker{display:none}
+  summary .pm{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--sage-deep);
+              display:flex;align-items:center;justify-content:center;color:var(--sage-deep);transition:transform .25s}
+  details[open] summary .pm{transform:rotate(45deg)}
+  details p{color:var(--muted);font-size:1rem;padding:0 0 22px;max-width:44em}
+
+  /* ---- cta / form ---- */
+  .signup{background:linear-gradient(160deg,var(--sage) 0%,#739659 100%);color:var(--cream)}
+  .signup .grid{display:grid;grid-template-columns:1fr .9fr;gap:56px;align-items:center}
+  .signup h2{font-size:clamp(2.2rem,4.6vw,3.6rem);color:#fff}
+  .signup .lead{margin-top:18px;color:var(--cream-dim);max-width:26em}
+  .form{background:rgba(243,245,235,.1);border:1px solid rgba(243,245,235,.25);border-radius:22px;padding:34px}
+  .form label{display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--cream-dim);margin:0 0 8px}
+  .form input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(243,245,235,.3);
+              background:rgba(243,245,235,.08);color:#fff;font-family:'Manrope';font-size:1rem;margin-bottom:20px}
+  .form input::placeholder{color:rgba(243,245,235,.5)}
+  .form input:focus{outline:none;border-color:var(--cream);background:rgba(243,245,235,.14)}
+  .form .btn{width:100%;justify-content:center;margin-top:4px}
+  .form .fine{margin-top:16px;font-size:.76rem;color:var(--cream-dim);line-height:1.5}
+  .form .ok{display:none;text-align:center;padding:24px 0}
+  .form .ok h3{font-size:2rem;color:#fff}
+  .form .ok p{color:var(--cream-dim);margin-top:8px}
+
+  /* ---- footer ---- */
+  footer{background:var(--ink);color:var(--cream-dim);padding:72px 0 36px}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}
+  .foot .name{font-family:'Cormorant';font-size:2rem;color:#fff;letter-spacing:.06em}
+  .foot p{margin-top:14px;font-size:.95rem;max-width:24em}
+  .foot h4{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin:0 0 16px;font-family:'Manrope';font-weight:600}
+  .foot a{display:block;margin-bottom:10px;font-size:.95rem;transition:color .2s}
+  .foot a:hover{color:#fff}
+  .foot-bot{margin-top:54px;padding-top:24px;border-top:1px solid rgba(243,245,235,.14);
+            display:flex;justify-content:space-between;gap:16px;font-size:.82rem;flex-wrap:wrap}
+
+  /* ---- responsive ---- */
+  @media(max-width:900px){
+    .nav-links{display:none}
+    .hero-grid{grid-template-columns:1fr;gap:10px;padding:56px 0 64px}
+    .hero-figure{order:-1;max-width:240px;margin:0 auto}
+    .hero-figure svg{max-width:230px}
+    .problem .grid,.faq .grid,.signup .grid,.method .grid{grid-template-columns:1fr;gap:30px}
+    .results .grid,.pricing .grid{grid-template-columns:repeat(2,1fr)}
+    .dir{grid-template-columns:auto 1fr;gap:6px 16px;row-gap:4px}
+    .dir .ds{grid-column:2}.dir .fmt{grid-column:2;margin-top:4px}
+    .foot-top{grid-template-columns:1fr 1fr}
+    section{padding:68px 0}
+  }
+  @media(max-width:540px){
+    body{font-size:16px}
+    .results .grid,.pricing .grid,.foot-top{grid-template-columns:1fr}
+    .wrap{padding:0 20px}
+    .nav-cta .btn{padding:12px 18px;font-size:.86rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    .draw{stroke-dashoffset:0}
+    .dot{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Иная — на главную">
+      <svg class="mono" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <circle cx="50" cy="50" r="48" stroke="var(--sage-deep)" stroke-width="2"/>
+        <text x="50" y="58" text-anchor="middle" font-family="Cormorant" font-weight="600" font-size="30" fill="var(--sage-deep)">И</text>
+        <line x1="50" y1="12" x2="50" y2="22" stroke="var(--sage-deep)" stroke-width="2"/>
+        <line x1="50" y1="78" x2="50" y2="88" stroke="var(--sage-deep)" stroke-width="2"/>
+      </svg>
+      <span class="name">Иная<small>студия осанки</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#method">Подход</a>
+      <a href="#directions">Направления</a>
+      <a href="#process">Как проходит</a>
+      <a href="#pricing">Цены</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#signup" class="btn btn-primary">Записаться</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top" style="padding:0">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow on-green">Студия осанки</span>
+      <h1>Иная осанка<br><em>иная ты</em></h1>
+      <p class="lead">Мы не качаем мышцы — мы выстраиваем тело. Мягкая работа с осанкой, дыханием и подвижностью для тех, кто весь день проводит за столом.</p>
+      <div class="cta-row">
+        <a href="#signup" class="btn btn-cream">Записаться на пробное <span class="arr">→</span></a>
+        <a href="#process" class="btn btn-cream-ghost">Как проходит занятие</a>
+      </div>
+      <p class="note">Первое занятие — диагностика осанки. Без абонемента и обязательств.</p>
+    </div>
+
+    <div class="hero-figure">
+      <!-- signature: фигура, выровненная по вертикальной оси (как при диагностике осанки) -->
+      <svg viewBox="0 0 400 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Фигура, выровненная по вертикальной оси">
+        <!-- plumb / ось -->
+        <line x1="200" y1="20" x2="200" y2="620" stroke="rgba(243,245,235,.55)" stroke-width="1.5" stroke-dasharray="3 6"/>
+        <!-- ticks -->
+        <g stroke="rgba(243,245,235,.5)" stroke-width="1.5">
+          <line x1="188" y1="20" x2="212" y2="20"/><line x1="192" y1="120" x2="208" y2="120"/>
+          <line x1="192" y1="320" x2="208" y2="320"/><line x1="192" y1="520" x2="208" y2="520"/>
+          <line x1="188" y1="620" x2="212" y2="620"/>
+        </g>
+        <!-- figure (front view, symmetric to axis) -->
+        <g stroke="var(--cream)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle class="draw" style="--len:190" cx="200" cy="74" r="30"/>
+          <path class="draw" style="--len:60" d="M200,104 L200,128"/>
+          <path class="draw" style="--len:130" d="M152,150 Q200,134 248,150"/>
+          <path class="draw" style="--len:200" d="M200,128 L200,318"/>
+          <path class="draw" style="--len:230" d="M156,152 C132,210 130,262 142,316"/>
+          <path class="draw" style="--len:230" d="M244,152 C268,210 270,262 258,316"/>
+          <path class="draw" style="--len:90" d="M168,316 Q200,308 232,316"/>
+          <path class="draw" style="--len:240" d="M182,318 C176,400 176,470 178,548"/>
+          <path class="draw" style="--len:240" d="M218,318 C224,400 224,470 222,548"/>
+          <path class="draw" style="--len:50" d="M178,548 L160,556"/>
+          <path class="draw" style="--len:50" d="M222,548 L240,556"/>
+        </g>
+        <!-- alignment dots -->
+        <g fill="var(--cream)">
+          <circle class="dot" style="animation-delay:1.5s" cx="200" cy="74" r="4.5"/>
+          <circle class="dot" style="animation-delay:1.7s" cx="200" cy="150" r="4.5"/>
+          <circle class="dot" style="animation-delay:1.9s" cx="200" cy="316" r="4.5"/>
+          <circle class="dot" style="animation-delay:2.1s" cx="200" cy="520" r="4.5"/>
+        </g>
+        <text x="216" y="78" font-family="Manrope" font-size="11" letter-spacing="2" fill="rgba(243,245,235,.7)">ШЕЯ</text>
+        <text x="258" y="154" font-family="Manrope" font-size="11" letter-spacing="2" fill="rgba(243,245,235,.7)">ПЛЕЧИ</text>
+        <text x="244" y="320" font-family="Manrope" font-size="11" letter-spacing="2" fill="rgba(243,245,235,.7)">ТАЗ</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="wrap grid">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Почему это важно</span>
+      <h2>Тело привыкает к&nbsp;тому, как вы&nbsp;сидите</h2>
+      <p class="sub">Восемь часов за столом, телефон, сведённые плечи. Со временем сутулость становится «нормой», и осанку уже не вернуть усилием воли — её выстраивают заново.</p>
+    </div>
+    <ul class="reveal">
+      <li><b>↓</b><span>Шея и плечи зажаты, к вечеру спина тяжёлая и ноет</span></li>
+      <li><b>↓</b><span>Дыхание становится поверхностным — грудная клетка «закрыта»</span></li>
+      <li><b>↓</b><span>Голова уходит вперёд, появляется привычная сутулость</span></li>
+      <li><b>↓</b><span>«Втянуть живот и расправить плечи» помогает на пять минут</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="method" id="method">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Чем мы другие</span>
+      <h2>Это не зал. Это работа с&nbsp;тем, как вы держите себя</h2>
+      <p class="sub">В «Иной» не гонятся за весами и отметками «до отказа». Мы возвращаем телу ось — мягко, осознанно и под контролем тренера.</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M5 8l7-4 7 4M5 16l7 4 7-4"/></svg>
+        <h3>Начинаем с диагностики</h3>
+        <p>Смотрим, где тело зажато и куда «уходит» ось. От этого зависит, с чего начинать именно вам.</p>
+      </div>
+      <div class="card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12c4-6 12-6 16 0M4 12c4 6 12 6 16 0" stroke-linecap="round"/></svg>
+        <h3>Работаем мягко</h3>
+        <p>Мобилизация, вытяжение, дыхание и контроль. Без рывков, без боли и без «терпи».</p>
+      </div>
+      <div class="card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 3-5 5-5s5 2 5 5M11 20c0-3 3-5 5-5s5 2 5 5"/></svg>
+        <h3>Малые группы и&nbsp;индивидуально</h3>
+        <p>Тренер видит каждого и поправляет на каждом движении. Никто не теряется в общей массе.</p>
+      </div>
+      <div class="card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v6M9 6l3-3 3 3M5 21c0-4 3-7 7-7s7 3 7 7" stroke-linecap="round"/></svg>
+        <h3>Переносим в&nbsp;жизнь</h3>
+        <p>Учим, как сидеть, стоять, носить сумку и спать, чтобы осанка держалась не только в студии.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTIONS -->
+<section class="directions" id="directions">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Направления</span>
+      <h2>Форматы занятий</h2>
+    </div>
+    <div class="dir-list reveal">
+      <div class="dir"><span class="num">01</span><span class="nm">Осанка и баланс</span><span class="ds">Базовое направление: ось, лопатки, таз, стопы. Фундамент для всего остального.</span><span class="fmt">Группа</span></div>
+      <div class="dir"><span class="num">02</span><span class="nm">Миофасциальный релиз</span><span class="ds">Снимаем зажимы и «склейки» тканей роллами и мячами — телу становится свободнее.</span><span class="fmt">Группа</span></div>
+      <div class="dir"><span class="num">03</span><span class="nm">Дыхание и mobility</span><span class="ds">Раскрываем грудную клетку, возвращаем подвижность суставам и рёбрам.</span><span class="fmt">Мини-группа</span></div>
+      <div class="dir"><span class="num">04</span><span class="nm">Мягкий стретчинг</span><span class="ds">Бережное вытяжение без рывков. Длина мышц, в которой осанка держится сама.</span><span class="fmt">Группа</span></div>
+      <div class="dir"><span class="num">05</span><span class="nm">Индивидуально</span><span class="ds">Программа под ваше тело и задачу. Подходит при болях в спине и шее.</span><span class="fmt">1-на-1</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Как проходит</span>
+      <h2>Путь от&nbsp;первого занятия к&nbsp;привычке</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="node">01</div><div><h3>Диагностика</h3><p>На первом занятии оцениваем осанку, подвижность и дыхание. Намечаем, с чего начать именно вам.</p></div></div>
+      <div class="step reveal"><div class="node">02</div><div><h3>План</h3><p>Подбираем формат и нагрузку под вас. Без универсальных схем «для всех».</p></div></div>
+      <div class="step reveal"><div class="node">03</div><div><h3>Занятия</h3><p>Регулярная мягкая работа. Тренер корректирует движения на каждой тренировке.</p></div></div>
+      <div class="step reveal"><div class="node">04</div><div><h3>Привычка</h3><p>Осанка закрепляется в повседневности — а не остаётся только в стенах студии.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Что меняется</span>
+      <h2>Что обычно чувствуют<br>через несколько недель</h2>
+    </div>
+    <div class="grid">
+      <div class="res reveal"><div class="big">Спина</div><p>К вечеру устаёт меньше, тяжесть и ноющая боль отступают.</p></div>
+      <div class="res reveal"><div class="big">Плечи и шея</div><p>Плечи раскрываются, шея становится свободнее, уходят зажимы.</p></div>
+      <div class="res reveal"><div class="big">Дыхание</div><p>Грудная клетка раскрывается — дышится глубже и спокойнее.</p></div>
+      <div class="res reveal"><div class="big">Осанка</div><p>Держитесь увереннее и визуально выше — без постоянного контроля.</p></div>
+    </div>
+    <p class="honest reveal">Скорость у всех разная и зависит от регулярности. Мы не обещаем «выпрямить за неделю» — мы помогаем телу перестроиться шаг за шагом.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Цены</span>
+      <h2>Выберите, с&nbsp;чего начать</h2>
+      <p class="sub">Начать удобнее с пробного — это диагностика и первое занятие, чтобы понять формат без абонемента.</p>
+    </div>
+    <div class="grid">
+      <div class="price feat reveal">
+        <span class="tier">Пробное</span>
+        <div class="amt">[ ₽ ]</div><span class="per">первое занятие</span>
+        <ul><li>Диагностика осанки</li><li>Первая тренировка</li><li>Подбор направления</li></ul>
+        <a href="#signup" class="btn btn-cream">Записаться</a>
+      </div>
+      <div class="price reveal">
+        <span class="tier">Разовое</span>
+        <div class="amt">[ ₽ ]</div><span class="per">одно занятие</span>
+        <ul><li>Любое групповое направление</li><li>Без абонемента</li></ul>
+        <a href="#signup" class="btn btn-ghost">Записаться</a>
+      </div>
+      <div class="price reveal">
+        <span class="tier">Абонемент</span>
+        <div class="amt">[ ₽ ]</div><span class="per">8 занятий</span>
+        <ul><li>Любые групповые направления</li><li>Выгоднее разовых</li><li>Срок действия [ ... ]</li></ul>
+        <a href="#signup" class="btn btn-ghost">Записаться</a>
+      </div>
+      <div class="price reveal">
+        <span class="tier">Индивидуально</span>
+        <div class="amt">[ ₽ ]</div><span class="per">занятие 1-на-1</span>
+        <ul><li>Программа под вас</li><li>Подходит при болях</li></ul>
+        <a href="#signup" class="btn btn-ghost">Записаться</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap grid">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Вопросы</span>
+      <h2>Коротко о&nbsp;главном</h2>
+    </div>
+    <div class="reveal">
+      <details open><summary>Нужна ли подготовка или форма? <span class="pm">+</span></summary><p>Нет. Начинаем с любого уровня — нагрузку подбираем индивидуально. Возраст и спортивный опыт не имеют значения.</p></details>
+      <details><summary>У меня болит спина или есть диагноз <span class="pm">+</span></summary><p>Скажите об этом тренеру до занятия — подберём безопасный формат. При острой боли и серьёзных диагнозах сначала к врачу: мы помогаем телу, но не заменяем лечение.</p></details>
+      <details><summary>Что взять с собой? <span class="pm">+</span></summary><p>Удобную одежду, в которой не жарко двигаться, и воду. Коврики, ролы и инвентарь есть в студии.</p></details>
+      <details><summary>Как быстро будет результат? <span class="pm">+</span></summary><p>Зависит от регулярности. Первые ощущения — свобода в плечах, лёгкость в спине — обычно появляются за несколько недель занятий.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNUP -->
+<section class="signup" id="signup">
+  <div class="wrap grid">
+    <div class="reveal">
+      <span class="eyebrow on-green">Запись</span>
+      <h2>Начните с&nbsp;одного занятия</h2>
+      <p class="lead">Оставьте контакты — администратор перезвонит, подберёт удобное время и ответит на вопросы.</p>
+    </div>
+    <div class="form reveal">
+      <div id="formBody">
+        <label for="nm">Как вас зовут</label>
+        <input id="nm" type="text" placeholder="Имя" autocomplete="name">
+        <label for="tel">Телефон</label>
+        <input id="tel" type="tel" placeholder="+7 ___ ___-__-__" autocomplete="tel">
+        <button class="btn btn-cream" id="sendBtn" type="button">Записаться на пробное</button>
+        <p class="fine">Нажимая кнопку, вы соглашаетесь на обработку персональных данных. Мы не передаём контакты третьим лицам.</p>
+      </div>
+      <div class="ok" id="okBox">
+        <h3>Заявка принята</h3>
+        <p>Мы свяжемся с вами в ближайшее время.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="name">Иная</div>
+        <p>Студия осанки. Возвращаем телу ось — мягко, осознанно и под контролем тренера.</p>
+      </div>
+      <div>
+        <h4>Студия</h4>
+        <a href="#method">Подход</a>
+        <a href="#directions">Направления</a>
+        <a href="#process">Как проходит</a>
+        <a href="#pricing">Цены</a>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+70000000000">[ телефон ]</a>
+        <a href="#">[ адрес студии ]</a>
+        <a href="#">[ часы работы ]</a>
+      </div>
+      <div>
+        <h4>Мы в сети</h4>
+        <a href="#">Telegram</a>
+        <a href="#">VK</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2025 Студия осанки «Иная»</span>
+      <span>[ ИНН / реквизиты ] · Политика конфиденциальности</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay = (i%4)*60 + 'ms';
+    io.observe(el);
+  });
+
+  // phone mask (light)
+  const tel = document.getElementById('tel');
+  tel.addEventListener('input',()=>{
+    let d = tel.value.replace(/\D/g,'').slice(0,11);
+    if(d.startsWith('8')) d = '7'+d.slice(1);
+    if(d.startsWith('7')===false && d.length) d = '7'+d;
+    let r='+7';
+    if(d.length>1) r+=' '+d.slice(1,4);
+    if(d.length>=5) r+=' '+d.slice(4,7);
+    if(d.length>=8) r+='-'+d.slice(7,9);
+    if(d.length>=10) r+='-'+d.slice(9,11);
+    tel.value = r;
+  });
+
+  // demo submit (no backend) — нужно подключить реальный обработчик
+  document.getElementById('sendBtn').addEventListener('click',()=>{
+    const name = document.getElementById('nm').value.trim();
+    const phone = document.getElementById('tel').value.replace(/\D/g,'');
+    if(!name || phone.length<11){
+      document.getElementById('nm').style.borderColor = name? '' : '#fff';
+      document.getElementById('tel').style.borderColor = phone.length<11? '#fff' : '';
+      return;
+    }
+    document.getElementById('formBody').style.display='none';
+    document.getElementById('okBox').style.display='block';
+  });
+</script>
+</body>
+</html>
